@@ -17,24 +17,18 @@ T = 100
 
 x = np.zeros((T,2)) #true state
 
-
 z = np.zeros((T,1)) #observation based on true state x and control u
 
-x_hat = np.zeros((T,2)) #updated true state
+x_hat = np.zeros((T,2)) #updated true state for the information filter
 
-x_hat2 = np.zeros((T,2))
+x_hat2 = np.zeros((T,2)) #updated true state for the Kalman filter
 
 for i in range(T-1):
 
     x[i+1] = F.dot(x[i]) + np.random.multivariate_normal(np.zeros(2), Q) # true state vector is populated with state transitions with gaussian noise (a priori estimate) x_k|k-1
 
     z[i+1] = H.dot(x[i+1]) + np.random.multivariate_normal(np.zeros(1), R) # observation vector is populated with state vector applied to the observation model with gaussian observation noise
-
-###
-
-#YOUR KALMAN FILTER CODE GOES HERE AND POPULATES x_hat BASED ON z
-
-###
+ 
 
 def Kalman_Filter(z,Q,H,F,R,x,P):
     x_pred = F.dot(x) #we are making a prediction using our previous estimate
@@ -60,7 +54,7 @@ for i in range(T-1):
     P = Information_Filter(z[i+1],Q,H,F,R, x_hat[i],P)[1] #updated covariance model
     x_hat[i+1] = Information_Filter(z[i+1],Q,H,F,R,x_hat[i],P)[0] #x_hat is populated with the new observation, state, and covariance for estimation
 
-est = x_hat.dot(np.transpose(H))
+est = x_hat.dot(np.transpose(H)) #estimated observations are made by applying observation model to the estimated states
 
 Q = np.array([[1.0,0.1],[0.1,1.0]]) #process noise variance
 
