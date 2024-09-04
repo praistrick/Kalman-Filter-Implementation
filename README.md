@@ -7,16 +7,16 @@ The Kalman filter is a very powerful and effective tool that engineers and scien
 
 Kalman filters are optimal for estimating linear systems with Gaussian noise, but come in all different flavors for different purposes, (extended kalman filters (EKFs) and unscented kalman filters (UKFs) use first and second order derivatives to approximately estimate non-linear systems, particle filters use Bayesian Inference for non-linear systems, etc) but their structures all revolve around the same sequence of steps.
 
-Kalman filters work on recursive estimation and thus need several defined factors, which may or may not be updated after each iteration. This includes a state space model, observation model, expected covariance matrices for each of those models, as well as measured values and true values. Depending on the application, an additional control model and control vector which acts on the model may be implemented to hold the estimated true value around some certain value. 
+Kalman filters work on recursive estimation and thus need several defined factors, which may or may not be updated after each iteration. This includes a state space model, observation model, expected covariance matrices for each of those models, as well as measured state values and true state values. Depending on the application, an additional control model and control vector which acts on the model may be implemented to hold the estimated true value around some certain value. 
 
 ### State Prediction
-After obtaining the initial true state values, first step is to make a prediction of the next state and covariance matrix conditioned on the current state space model and previous estimates of the true values for the state and covariance. 
+After obtaining the initial true state value, first step is to make a prediction of the next state and covariance matrix conditioned on the current state space model and previous estimates of the true values for the state and covariance. 
 
 ### Kalman Gain Calculation
 The next step is to use these (priori) estimates to update the system, given an observation. This is done by calculating the difference between the current measurement and the estimated state applied to an observation model. From there, the observation model is applied to the estimated covariance (called the updated covariance), and this, along with the initial prediction and the observation model are combined to calculate the Kalman gain. This a matrix which determines how "big" of a correction is needed (for example, if the estimated value for our state is far from our measurement with relatively small covariances between them, the Kalman gain will be large to correct for the large error between the state and measurement. 
 
 ### State Update
-Finally, using the Kalman gain, we can calculate the corrected (posterior) estimates of the true state and state covariance. These values continuously feed back into the algorithm, being used as initial "true states" to then calculate the updated values for the next state until the end of the system's measurements. 
+Finally, using the Kalman gain, we can calculate the corrected (posterior) estimates of the true state and state covariance. These values continuously feed back into the algorithm, being used as a substitute of "true states" (as they cannot be directly observed) to then calculate the updated values for the next state until the end of the system's measurements. 
 
 ### Assumptions
 For a system to be effective for estimation by an ordinary Kalman filter, a few assumptions need to be made, namely, observation and measurement noise is independent, approximately normal, with mean 0, and the dynamic observation/state space models are linear. 
